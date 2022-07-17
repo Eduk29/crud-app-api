@@ -40,11 +40,32 @@ To validate if everything went well, open your browser at [http://localhost:8080
 
 ## Application Roadmap
 
+- Add Swagger API to Document API
 - Implement a CRUD for Person
+    - List All Persons
+    - List All Persons Paginated
+    - List Person by id
+    - List Person by filter
+    - Create a Person
+    - Remove a Person
+    - Update a Person
 - Implement a CRUD for User
+    - List All Users
+    - List All Users Paginated
+    - List User by id
+    - List User by filter
+    - Create an User
+    - Remove an User
+    - Update an User
 - Add Spring Security to project
 - Configure a basic database authentication
 - Implement a CRUD for Role
+    - List All Roles
+    - List Roles by id
+    - List Roles by filter
+    - Create an Role
+    - Remove an Role
+    - Update an Role
 - Implement JWT based authentication
 
 ## Developer :computer:

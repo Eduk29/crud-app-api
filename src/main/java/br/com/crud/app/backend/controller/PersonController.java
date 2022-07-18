@@ -1,5 +1,6 @@
 package br.com.crud.app.backend.controller;
 
+import br.com.crud.app.backend.enums.ErrorsEnum;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class PersonController {
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
         Optional<Person> person = this.personService.findById(id);
         if(person.isEmpty()) {
-            return new ResponseEntity<>("This person id is not register, please verify!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ErrorsEnum.ERROO1.getDescription(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(person, HttpStatus.OK);

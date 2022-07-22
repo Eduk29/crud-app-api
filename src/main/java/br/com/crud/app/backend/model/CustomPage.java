@@ -1,4 +1,4 @@
-package br.com.crud.app.backend.utils;
+package br.com.crud.app.backend.model;
 
 import java.util.List;
 import java.util.Date;

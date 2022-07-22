@@ -19,7 +19,7 @@ public abstract class ServiceUtils {
     }
 
     public static String removeDoubleQuotes(String stringWithDoubleQuotes) {
-        return stringWithDoubleQuotes.replace("/","");
+        return stringWithDoubleQuotes.replace("\"","");
     }
 
 

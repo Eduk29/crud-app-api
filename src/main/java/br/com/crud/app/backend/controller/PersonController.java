@@ -1,6 +1,6 @@
 package br.com.crud.app.backend.controller;
 
-import br.com.crud.app.backend.utils.CustomPage;
+import br.com.crud.app.backend.model.CustomPage;
 import br.com.crud.app.backend.enums.ErrorsEnum;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.service.PersonService;
@@ -43,6 +43,27 @@ public class PersonController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (NumberFormatException error) {
             return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<?> findByFilter(@RequestParam(value = "$pageNumber", required = false) String pageNumberParameter,
+                                          @RequestParam(value = "$pageSize", required = false) String pageSizeParameter,
+                                          @RequestParam(value = "$filter", required = false) String filterParameter) {
+        try {
+            Integer pageNumber = Integer.parseInt(pageNumberParameter);
+            Integer pageSize = Integer.parseInt(pageSizeParameter);
+
+            CustomPage<Person> page = this.personService.findByFilter(filterParameter, pageNumber, pageSize);
+
+            if (page.getContent() != null) {
+                return new ResponseEntity<>(page, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (NumberFormatException error) {
+            return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
+        } catch (Exception error) {
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -42,11 +42,14 @@ To validate if everything went well, open your browser at [http://localhost:8080
 
 - Add Swagger API to Document API
 - Implement a CRUD for Person
-    - List All Persons
-    - List All Persons Paginated
-    - List Person by id
+    - List All Persons :heavy_check_mark:
+    - List All Persons Paginated :heavy_check_mark:
+    - List Person by id :heavy_check_mark:
     - List Person by filter
-    - Create a Person
+      - By Name :heavy_check_mark:
+      - By Age
+      - By Birthday
+    - Create a Person :heavy_check_mark:
     - Remove a Person
     - Update a Person
 - Implement a CRUD for User

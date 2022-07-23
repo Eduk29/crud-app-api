@@ -38,17 +38,43 @@ To validate if everything went well, open your browser at [http://localhost:8080
 - Maven
 - Postgres
 
+## Application Endpoints
+
+- Person
+  - List All Persons without pagination
+    - HTTP Method: GET
+    - URI: /api/person
+  - List All Persons with pagination
+    - HTTP Method: GET
+    - URI: /api/person
+    - Query parameters:  
+      - $pageNumber - Actual page
+      - $pageSize - Number of elements in a page
+  - Find Person by ID
+    - HTTP Method: GET
+    - URI: /api/person/{id}
+    - Parameters:
+      - id - Person ID
+  - Search Person by criteria
+    - HTTP Method: GET
+    - URI: /api/person/search
+    - Query Parameters: 
+      - $pageNumber - Actual page
+      - $pageSize - Number of elements in a page
+      - $filter - Search criteria and key
+        - - Example: $filter="name=ide"
+    - Available search criteria: 
+      - name
+      - age
+  - Add new Person
+    - HTTP Method: POST
+    - URI: /api/person/new
+    - Body: { "name": "Jack Kirby", "birthday": "1922-12-28T12:00:00.000Z", "age": "99" }
+
 ## Application Roadmap
 
 - Add Swagger API to Document API
-- Implement a CRUD for Person
-    - List All Persons
-    - List All Persons Paginated
-    - List Person by id
-    - List Person by filter
-    - Create a Person
-    - Remove a Person
-    - Update a Person
+- Implement a CRUD for Person :heavy_check_mark:
 - Implement a CRUD for User
     - List All Users
     - List All Users Paginated

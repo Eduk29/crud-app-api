@@ -92,4 +92,23 @@ public class PersonController {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("{id}/remove")
+    public ResponseEntity<?> remove(@PathVariable("id") Long id) {
+        try {
+            this.personService.removeById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch ( RuntimeException error) {
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping(path = "{id}/update")
+    public ResponseEntity<?> update(@RequestBody Person person, @PathVariable("id") Long id) {
+        try {
+            CustomPage<Person> persons = this.personService.updateById(person, id);
+            return new ResponseEntity<CustomPage<Person>>(persons, HttpStatus.OK);
+        } catch(RuntimeException error) {
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -44,6 +44,7 @@ public class PersonService {
         SearchFilter searchFilter = null;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Person> page = null;
+        List<Person> persons = null;
 
         if (filter != null) {
             searchFilter = new SearchFilter(filter);
@@ -51,7 +52,15 @@ public class PersonService {
 
         switch (searchFilter.getSearchMode()) {
             case "name":
-                List<Person> persons = this.personRepository.findByNameContainsIgnoreCase(searchFilter.getSearchParameter());
+                persons = this.personRepository.findByNameContainsIgnoreCase(searchFilter.getSearchParameter());
+                return new CustomPage(persons);
+
+            case "age":
+                persons = this.personRepository.findByAge(Integer.parseInt(searchFilter.getSearchParameter()));
+                return new CustomPage(persons);
+
+            case "birthday":
+                persons = this.personRepository.findByBirthdayContains(searchFilter.getSearchParameter());
                 return new CustomPage(persons);
 
             default:
@@ -64,6 +73,27 @@ public class PersonService {
             this.validatePerson(personToRegister);
             Person registeredPerson = this.personRepository.save(personToRegister);
             return new CustomPage<>(registeredPerson);
+    }
+
+    public void removeById(Long id) throws RuntimeException {
+        if (!this.personRepository.existsById(id)) {
+            throw new RuntimeException(ErrorsEnum.ERROO1.getDescription());
+        }
+        this.personRepository.deleteById(id);
+    }
+
+    public CustomPage<Person> updateById(Person person, Long id) throws RuntimeException {
+        if (!this.personRepository.existsById(id)) {
+            throw new RuntimeException(ErrorsEnum.ERROO1.getDescription());
+        }
+
+        this.validatePerson(person);
+
+        person.setId(id);
+        person = this.personRepository.save(person);
+
+        CustomPage<Person> customPage = new CustomPage<Person>(person);
+        return customPage;
     }
 
     private void validatePerson(Person person)  throws RuntimeException {

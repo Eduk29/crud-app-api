@@ -76,7 +76,7 @@ To validate if everything went well, open your browser at [http://localhost:8080
 - Add Swagger API to Document API
 - Implement a CRUD for Person :heavy_check_mark:
 - Implement a CRUD for User
-    - List All Users
+    - List All Users :heavy_check_mark:
     - List All Users Paginated
     - List User by id
     - List User by filter

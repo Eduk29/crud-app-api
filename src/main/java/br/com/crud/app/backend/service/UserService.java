@@ -86,7 +86,9 @@ public class UserService {
     private void validatePersonInsideUser(User user) {
         if (user.getPerson().getId() == null || user.getPerson().getId() == 0) {
             throw new RuntimeException(ErrorsEnum.ERR006.getDescription());
-        } else if ((user.getPerson().getId() != null || user.getPerson().getId() != 0))
+        } else if ((user.getPerson().getId() != null || user.getPerson().getId() != 0)) {
+
+        }
     }
 
 }

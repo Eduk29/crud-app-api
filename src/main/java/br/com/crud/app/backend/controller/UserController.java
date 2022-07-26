@@ -5,6 +5,8 @@ import br.com.crud.app.backend.model.CustomPage;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.model.User;
 import br.com.crud.app.backend.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@Api(tags = "Users REST API")
 public class UserController {
 
     private final UserService userService;
@@ -24,6 +27,7 @@ public class UserController {
     }
 
     @GetMapping("")
+    @ApiOperation(value = "List all users.")
     public ResponseEntity<?> findAllPaginated(
             @RequestParam(value = "$pageNumber", required = false) String pageNumberParameter,
             @RequestParam(value = "$pageSize", required = false) String pageSizeParameter) {
@@ -51,6 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Find a specific user by id.")
     public ResponseEntity<?> findById(@PathVariable("id") String idParameter) {
         try {
             Long id = Long.parseLong(idParameter);
@@ -67,6 +72,7 @@ public class UserController {
     }
 
     @GetMapping("search")
+    @ApiOperation(value = "Find a specific person by search parameter.")
     public ResponseEntity<?> findByFilter(@RequestParam(value = "$pageNumber", required = false) String pageNumberParameter,
                                           @RequestParam(value = "$pageSize", required = false) String pageSizeParameter,
                                           @RequestParam(value = "$filter", required = false) String filterParameter) {

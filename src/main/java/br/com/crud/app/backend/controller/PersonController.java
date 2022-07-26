@@ -4,6 +4,8 @@ import br.com.crud.app.backend.model.CustomPage;
 import br.com.crud.app.backend.enums.ErrorsEnum;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.service.PersonService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/persons")
+@Api(tags = "Persons REST API")
 public class PersonController {
 
     private final PersonService personService;
@@ -24,6 +27,7 @@ public class PersonController {
     }
 
     @GetMapping("")
+    @ApiOperation(value = "List all persons.")
     public ResponseEntity<?> findAllPaginated(@RequestParam(value = "$pageNumber", required = false) String pageNumberParameter,
                                               @RequestParam(value = "$pageSize", required = false) String pageSizeParameter) {
         if (pageNumberParameter == null || pageSizeParameter == null) {
@@ -47,6 +51,7 @@ public class PersonController {
     }
 
     @GetMapping("search")
+    @ApiOperation(value = "Find a specific person by search parameter.")
     public ResponseEntity<?> findByFilter(@RequestParam(value = "$pageNumber", required = false) String pageNumberParameter,
                                           @RequestParam(value = "$pageSize", required = false) String pageSizeParameter,
                                           @RequestParam(value = "$filter", required = false) String filterParameter) {
@@ -68,6 +73,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Find a specific person by id.")
     public ResponseEntity<?> findById(@PathVariable("id") String idParameter) {
         try {
             Long id = Long.parseLong(idParameter);
@@ -84,6 +90,7 @@ public class PersonController {
     }
 
     @PostMapping(path = "new", consumes = "application/json")
+    @ApiOperation(value = "Register a new person.")
     public ResponseEntity<?> registerPerson(@RequestBody Person person) {
         try{
             CustomPage<Person> page = this.personService.registerPerson(person);
@@ -94,6 +101,7 @@ public class PersonController {
     }
 
     @DeleteMapping("{id}/remove")
+    @ApiOperation(value = "Remove a specific person.")
     public ResponseEntity<?> remove(@PathVariable("id") Long id) {
         try {
             this.personService.removeById(id);
@@ -103,6 +111,7 @@ public class PersonController {
         }
     }
     @PutMapping(path = "{id}/update")
+    @ApiOperation(value = "Update a specific person.")
     public ResponseEntity<?> update(@RequestBody Person person, @PathVariable("id") Long id) {
         try {
             CustomPage<Person> persons = this.personService.updateById(person, id);

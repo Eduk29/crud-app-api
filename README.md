@@ -40,40 +40,12 @@ To validate if everything went well, open your browser at [http://localhost:8080
 
 ## Application Endpoints
 
-- Person
-  - List All Persons without pagination
-    - HTTP Method: GET
-    - URI: /api/person
-  - List All Persons with pagination
-    - HTTP Method: GET
-    - URI: /api/person
-    - Query parameters:  
-      - $pageNumber - Actual page
-      - $pageSize - Number of elements in a page
-  - Find Person by ID
-    - HTTP Method: GET
-    - URI: /api/person/{id}
-    - Parameters:
-      - id - Person ID
-  - Search Person by criteria
-    - HTTP Method: GET
-    - URI: /api/person/search
-    - Query Parameters: 
-      - $pageNumber - Actual page
-      - $pageSize - Number of elements in a page
-      - $filter - Search criteria and key
-        - - Example: $filter="name=ide"
-    - Available search criteria: 
-      - name
-      - age
-  - Add new Person
-    - HTTP Method: POST
-    - URI: /api/person/new
-    - Body: { "name": "Jack Kirby", "birthday": "1922-12-28T12:00:00.000Z", "age": "99" }
+To view the application endpoints documentation, run the application as mentioned in Start Application section and access the Swagger UI in (http://localhost:8080/api/swagger-ui.html)[http://localhost:8080/api/swagger-ui.html]
+
 
 ## Application Roadmap
 
-- Add Swagger API to Document API
+- Add Swagger API to Document API :heavy_check_mark:
 - Implement a CRUD for Person :heavy_check_mark:
 - Implement a CRUD for User :heavy_check_mark:
 - Implement a CRUD for Role

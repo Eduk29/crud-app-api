@@ -75,16 +75,7 @@ To validate if everything went well, open your browser at [http://localhost:8080
 
 - Add Swagger API to Document API
 - Implement a CRUD for Person :heavy_check_mark:
-- Implement a CRUD for User
-    - List All Users
-    - List All Users Paginated
-    - List User by id
-    - List User by filter
-    - Create an User
-    - Remove an User
-    - Update an User
-- Add Spring Security to project
-- Configure a basic database authentication
+- Implement a CRUD for User :heavy_check_mark:
 - Implement a CRUD for Role
     - List All Roles
     - List Roles by id
@@ -92,6 +83,8 @@ To validate if everything went well, open your browser at [http://localhost:8080
     - Create an Role
     - Remove an Role
     - Update an Role
+- Add Spring Security to project
+- Configure a basic database authentication
 - Implement JWT based authentication
 
 ## Developer :computer:

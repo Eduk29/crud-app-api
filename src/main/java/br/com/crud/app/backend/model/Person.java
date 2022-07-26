@@ -18,6 +18,11 @@ public class Person implements Serializable {
     @Column(name = "ID_PERSON", nullable = false)
     private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")
+    @JsonIgnoreProperties(value = "person", allowSetters = true)
+    private User user;
+
     @Column(name = "NAME_PERSON", nullable = false, length = 255)
     private String name;
 
@@ -33,6 +38,14 @@ public class Person implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {

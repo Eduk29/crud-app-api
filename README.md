@@ -40,7 +40,7 @@ To validate if everything went well, open your browser at [http://localhost:8080
 
 ## Application Endpoints
 
-To view the application endpoints documentation, run the application as mentioned in Start Application section and access the Swagger UI in (http://localhost:8080/api/swagger-ui.html)[http://localhost:8080/api/swagger-ui.html]
+To view the application endpoints documentation, run the application as mentioned in Start Application section and access the Swagger UI in [http://localhost:8080/api/swagger-ui.html](http://localhost:8080/api/swagger-ui.html)
 
 
 ## Application Roadmap

@@ -6,7 +6,8 @@ public enum ErrorsEnum {
     ERROO2("Invalid parameters, please verify!"),
     ERR003("Person is not valid, please verify!"),
     ERR004("User not found, please verify!"),
-    ERR005("User is not valid, please verify!");
+    ERR005("User is not valid, please verify!"),
+    ERR006("User must have person owner, please verify!");
 
     private String description;
 

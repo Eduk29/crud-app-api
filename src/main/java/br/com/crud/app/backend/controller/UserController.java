@@ -66,5 +66,24 @@ public class UserController {
         }
     }
 
+    @GetMapping("search")
+    public ResponseEntity<?> findByFilter(@RequestParam(value = "$pageNumber", required = false) String pageNumberParameter,
+                                          @RequestParam(value = "$pageSize", required = false) String pageSizeParameter,
+                                          @RequestParam(value = "$filter", required = false) String filterParameter) {
+        try {
+            Integer pageNumber = Integer.parseInt(pageNumberParameter);
+            Integer pageSize = Integer.parseInt(pageSizeParameter);
 
+            CustomPage<User> page = this.userService.findByFilter(filterParameter, pageNumber, pageSize);
+
+            if (page.getContent() != null) {
+                return new ResponseEntity<>(page, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (NumberFormatException error) {
+            return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
+        } catch (Exception error) {
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

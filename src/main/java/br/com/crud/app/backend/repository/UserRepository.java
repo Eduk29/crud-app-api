@@ -16,4 +16,5 @@ public interface UserRepository  extends PagingAndSortingRepository<User, Long>,
     Optional<User> findById(Long id);
     Page<User> findAll(Pageable pageable);
     List<User> findByUsernameContainsIgnoreCase(String username);
+    Boolean existsUsersByUsername(String username);
 }

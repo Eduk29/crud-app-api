@@ -7,7 +7,9 @@ public enum ErrorsEnum {
     ERR003("Person is not valid, please verify!"),
     ERR004("User not found, please verify!"),
     ERR005("User is not valid, please verify!"),
-    ERR006("User must have person owner, please verify!");
+    ERR006("User must have person owner, please verify!"),
+    ERR007("Username already exist, please verify!");
+
 
     private String description;
 

@@ -25,6 +25,9 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private UserService userService;
+
     public List<Person> findAll() {
         return this.personRepository.findAll();
     }
@@ -71,6 +74,9 @@ public class PersonService {
 
     public CustomPage<Person> registerPerson(Person personToRegister) throws RuntimeException {
             this.validatePerson(personToRegister);
+            this.userService.validateUser(personToRegister.getUser());
+            this.userService.createLoginCount(personToRegister.getUser());
+
             Person registeredPerson = this.personRepository.save(personToRegister);
             return new CustomPage<>(registeredPerson);
     }

@@ -72,7 +72,7 @@ public class UserService {
         return new CustomPage<>(registeredUser);
     }
 
-    private void validateUser(User user)  throws RuntimeException {
+    protected void validateUser(User user)  throws RuntimeException {
         if (ObjectUtils.isEmpty(user)) {
             throw new RuntimeException(ErrorsEnum.ERR005.getDescription());
         }
@@ -81,14 +81,14 @@ public class UserService {
                 (user.getPassword() == null || user.getPassword() == "")) {
             throw new RuntimeException(ErrorsEnum.ERR005.getDescription());
         }
-    }
 
-    private void validatePersonInsideUser(User user) {
-        if (user.getPerson().getId() == null || user.getPerson().getId() == 0) {
-            throw new RuntimeException(ErrorsEnum.ERR006.getDescription());
-        } else if ((user.getPerson().getId() != null || user.getPerson().getId() != 0)) {
-
+        if (userRepository.existsUsersByUsername(user.getUsername())) {
+            throw new RuntimeException(ErrorsEnum.ERR007.getDescription());
         }
     }
 
+    protected User createLoginCount(User user) {
+        user.setLoginCount(0);
+        return user;
+    }
 }

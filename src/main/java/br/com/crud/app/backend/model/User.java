@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +16,15 @@ public class User implements Serializable {
     @Column(name = "ID_USER", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "user", optional = true)
+    // Owner for Relationship between User and Role (JoinColumn)
+    @JsonIgnoreProperties(value = "users", allowSetters = true)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "CRUD_APP_REL_USER_ROLE",
+            joinColumns = { @JoinColumn(name = "ID_USER") },
+            inverseJoinColumns = { @JoinColumn(name = "ID_ROLE") })
+    private List<Role> roles;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "user", optional = true)
     @JsonIgnoreProperties(value = "user", allowSetters = true)
     private Person person;
 
@@ -34,6 +43,14 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public Person getPerson() {
@@ -73,20 +90,22 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(loginCount, user.loginCount);
+        return Objects.equals(id, user.id) && Objects.equals(roles, user.roles) && Objects.equals(person, user.person) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(loginCount, user.loginCount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, loginCount);
+        return Objects.hash(id, roles, person, username, password, loginCount);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", roles=" + roles +
+                ", person=" + person +
                 ", username='" + username + '\'' +
-                ", password=" + password +
+                ", password='" + password + '\'' +
                 ", loginCount=" + loginCount +
                 '}';
     }

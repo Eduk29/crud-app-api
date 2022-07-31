@@ -19,7 +19,7 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ROLE", nullable = false, precision = 9, scale = 0)
-    private Integer id;
+    private Long id;
 
     @JsonIgnoreProperties(value = {"roles"})
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
@@ -27,19 +27,34 @@ public class Role implements Serializable {
     private List<User> users;
 
     @Column(name = "CODE_ROLE", nullable = true, length = 255)
+    @JsonInclude(Include.NON_NULL)
     private String code;
 
     @Column(name = "DESCRIPTION_ROLE", nullable = true, length = 255)
+    @JsonInclude(Include.NON_NULL)
     private String description;
 
     @Column(name = "NAME_ROLE", nullable = true, length = 255)
+    @JsonInclude(Include.NON_NULL)
     private String name;
 
-    public Integer getId() {
+    @Transient
+    @JsonInclude(Include.NON_NULL)
+    private List<String> roleList;
+
+    public List<String> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<String> roleList) {
+        this.roleList = roleList;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -80,12 +95,12 @@ public class Role implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(id, role.id) && Objects.equals(users, role.users) && Objects.equals(code, role.code) && Objects.equals(description, role.description) && Objects.equals(name, role.name);
+        return Objects.equals(id, role.id) && Objects.equals(users, role.users) && Objects.equals(code, role.code) && Objects.equals(description, role.description) && Objects.equals(name, role.name) && Objects.equals(roleList, role.roleList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, users, code, description, name);
+        return Objects.hash(id, users, code, description, name, roleList);
     }
 
     @Override
@@ -96,6 +111,7 @@ public class Role implements Serializable {
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
+                ", roleList=" + roleList +
                 '}';
     }
 }

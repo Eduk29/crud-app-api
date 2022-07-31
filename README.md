@@ -48,13 +48,7 @@ To view the application endpoints documentation, run the application as mentione
 - Add Swagger API to Document API :heavy_check_mark:
 - Implement a CRUD for Person :heavy_check_mark:
 - Implement a CRUD for User :heavy_check_mark:
-- Implement a CRUD for Role
-    - List All Roles
-    - List Roles by id
-    - List Roles by filter
-    - Create an Role
-    - Remove an Role
-    - Update an Role
+- Implement a CRUD for Role :heavy_check_mark:
 - Add Spring Security to project
 - Configure a basic database authentication
 - Implement JWT based authentication

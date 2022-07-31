@@ -1,18 +1,14 @@
 package br.com.crud.app.backend.service;
 
 import br.com.crud.app.backend.enums.ErrorsEnum;
-import br.com.crud.app.backend.model.*;
+import br.com.crud.app.backend.model.Role;
+import br.com.crud.app.backend.model.SearchFilter;
 import br.com.crud.app.backend.repository.RoleRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import br.com.crud.app.backend.model.SearchFilter;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -88,7 +84,7 @@ public class RoleService {
         return this.roleRepository.save(role);
     }
 
-    protected void validateRole(Role role)  throws RuntimeException {
+    protected void validateRole(Role role) throws RuntimeException {
         if (ObjectUtils.isEmpty(role)) {
             throw new RuntimeException(ErrorsEnum.ERR009.getDescription());
         }
@@ -99,7 +95,7 @@ public class RoleService {
             throw new RuntimeException(ErrorsEnum.ERR009.getDescription());
         }
 
-        if (this.roleRepository.existsByCode(role.getCode())){
+        if (this.roleRepository.existsByCode(role.getCode())) {
             throw new RuntimeException(ErrorsEnum.ERR010.getDescription());
         }
     }

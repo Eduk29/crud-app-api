@@ -2,19 +2,16 @@ package br.com.crud.app.backend.controller;
 
 import br.com.crud.app.backend.enums.ErrorsEnum;
 import br.com.crud.app.backend.model.CustomPage;
-import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.model.Role;
 import br.com.crud.app.backend.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/roles")
@@ -33,7 +30,7 @@ public class RoleController {
         List<Role> roles = this.roleService.findAll();
         CustomPage page = new CustomPage<>(roles);
 
-        if(roles.size() == 0 ){
+        if (roles.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(page, HttpStatus.OK);
@@ -45,11 +42,12 @@ public class RoleController {
         try {
             Long id = Long.parseLong(idParameter);
             Role role = this.roleService.findById(id);
+            CustomPage<Role> page = new CustomPage<>(role);
 
-            if(ObjectUtils.isEmpty(role)) {
+            if (ObjectUtils.isEmpty(role)) {
                 return new ResponseEntity<>(ErrorsEnum.ERR008.getDescription(), HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(role, HttpStatus.OK);
+            return new ResponseEntity<>(page, HttpStatus.OK);
         } catch (NumberFormatException error) {
             return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
         }
@@ -62,7 +60,8 @@ public class RoleController {
             List<Role> roles = this.roleService.findByFilter(filterParameter);
 
             if (roles.size() != 0) {
-                return new ResponseEntity<>(roles, HttpStatus.OK);
+                CustomPage<List<Role>> page = new CustomPage<List<Role>>(roles);
+                return new ResponseEntity<>(page, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception error) {
@@ -73,9 +72,10 @@ public class RoleController {
     @PostMapping(path = "/new", consumes = "application/json")
     @ApiOperation(value = "Register a new role.")
     public ResponseEntity<?> registerPerson(@RequestBody Role role) {
-        try{
+        try {
             Role registeredRole = this.roleService.registerRole(role);
-            return new ResponseEntity<>(registeredRole, HttpStatus.CREATED);
+            CustomPage<Role> page = new CustomPage<Role>(registeredRole);
+            return new ResponseEntity<>(page, HttpStatus.CREATED);
         } catch (RuntimeException error) {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -87,7 +87,7 @@ public class RoleController {
         try {
             this.roleService.removeById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch ( RuntimeException error) {
+        } catch (RuntimeException error) {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -97,8 +97,9 @@ public class RoleController {
     public ResponseEntity<?> update(@RequestBody Role role, @PathVariable("id") Long id) {
         try {
             Role roleUpdated = this.roleService.updateById(id, role);
-            return new ResponseEntity<>(roleUpdated, HttpStatus.OK);
-        } catch(RuntimeException error) {
+            CustomPage<Role> page = new CustomPage<>(roleUpdated);
+            return new ResponseEntity<>(page, HttpStatus.OK);
+        } catch (RuntimeException error) {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

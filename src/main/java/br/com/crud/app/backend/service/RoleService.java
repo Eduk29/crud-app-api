@@ -24,7 +24,6 @@ public class RoleService {
         List<Role> roles = this.roleRepository.findAll();
         for (int i = 0; i < roles.size(); i++) {
             this.removeUserObject(roles.get(i));
-            this.removeRoleListObject(roles.get(i));
         }
         return roles;
     }
@@ -32,7 +31,6 @@ public class RoleService {
     public Role findById(Long id) {
         Role role = this.roleRepository.findById(id).get();
         this.removeUserObject(role);
-        this.removeRoleListObject(role);
         return role;
     }
 
@@ -49,7 +47,6 @@ public class RoleService {
                 roles = this.roleRepository.findByCode(searchFilter.getSearchParameter());
                 for (int i = 0; i < roles.size(); i++) {
                     this.removeUserObject(roles.get(i));
-                    this.removeRoleListObject(roles.get(i));
                 }
                 return roles;
 
@@ -102,9 +99,5 @@ public class RoleService {
 
     private void removeUserObject(Role role) {
         role.setUsers(null);
-    }
-
-    private void removeRoleListObject(Role role) {
-        role.setRoleList(null);
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "CRUD_APP_ROLE")
 public class Role implements Serializable {
 
@@ -37,18 +37,6 @@ public class Role implements Serializable {
     @Column(name = "NAME_ROLE", nullable = true, length = 255)
     @JsonInclude(Include.NON_NULL)
     private String name;
-
-    @Transient
-    @JsonInclude(Include.NON_NULL)
-    private List<String> roleList;
-
-    public List<String> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<String> roleList) {
-        this.roleList = roleList;
-    }
 
     public Long getId() {
         return id;
@@ -95,12 +83,12 @@ public class Role implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(id, role.id) && Objects.equals(users, role.users) && Objects.equals(code, role.code) && Objects.equals(description, role.description) && Objects.equals(name, role.name) && Objects.equals(roleList, role.roleList);
+        return Objects.equals(id, role.id) && Objects.equals(users, role.users) && Objects.equals(code, role.code) && Objects.equals(description, role.description) && Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, users, code, description, name, roleList);
+        return Objects.hash(id, users, code, description, name);
     }
 
     @Override
@@ -111,7 +99,6 @@ public class Role implements Serializable {
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
-                ", roleList=" + roleList +
                 '}';
     }
 }

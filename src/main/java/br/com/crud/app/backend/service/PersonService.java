@@ -29,7 +29,8 @@ public class PersonService {
     private UserService userService;
 
     public List<Person> findAll() {
-        return this.personRepository.findAll();
+        List<Person> persons = this.personRepository.findAll();
+        return persons;
     }
 
     public Optional<Person> findById(Long id) {

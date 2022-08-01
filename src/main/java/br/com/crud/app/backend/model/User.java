@@ -1,6 +1,7 @@
 package br.com.crud.app.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,6 +37,10 @@ public class User implements Serializable {
 
     @Column(name = "LOGIN_COUNT_USER", nullable = false)
     private Integer loginCount;
+
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> roleList;
 
     public Long getId() {
         return id;
@@ -85,17 +90,25 @@ public class User implements Serializable {
         this.loginCount = loginCount;
     }
 
+    public List<String> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<String> roleList) {
+        this.roleList = roleList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(roles, user.roles) && Objects.equals(person, user.person) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(loginCount, user.loginCount);
+        return Objects.equals(id, user.id) && Objects.equals(roles, user.roles) && Objects.equals(person, user.person) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(loginCount, user.loginCount) && Objects.equals(roleList, user.roleList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, roles, person, username, password, loginCount);
+        return Objects.hash(id, roles, person, username, password, loginCount, roleList);
     }
 
     @Override
@@ -107,6 +120,7 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", loginCount=" + loginCount +
+                ", roleList=" + roleList +
                 '}';
     }
 }

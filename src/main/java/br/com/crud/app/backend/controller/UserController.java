@@ -5,6 +5,7 @@ import br.com.crud.app.backend.model.CustomPage;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.model.User;
 import br.com.crud.app.backend.service.UserService;
+import br.com.crud.app.backend.utils.RoleUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class UserController {
             @RequestParam(value = "$pageSize", required = false) String pageSizeParameter) {
 
         if (pageNumberParameter == null || pageSizeParameter == null) {
-            List<User> users = this.userService.findAll();
+            List<User> usersResponse = this.userService.findAll();
+            List<User> users = this.removeRoleDataFromUserList(usersResponse);
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
 
@@ -44,6 +46,9 @@ public class UserController {
             CustomPage<User> page = this.userService.findAllPaginated(pageNumber, pageSize);
 
             if (page.getContent() != null) {
+                List<User> usersResponse = page.getContent();
+                List<User> user = this.removeRoleDataFromUserList(usersResponse);
+                page.setContent(user);
                 return new ResponseEntity<>(page, HttpStatus.OK);
             }
 
@@ -65,6 +70,10 @@ public class UserController {
                 return new ResponseEntity<>(ErrorsEnum.ERR004.getDescription(), HttpStatus.BAD_REQUEST);
             }
 
+            List<User> usersResponse = page.getContent();
+            List<User> users = this.removeRoleDataFromUserList(usersResponse);
+            page.setContent(users);
+
             return new ResponseEntity<>(page, HttpStatus.OK);
         } catch (NumberFormatException error) {
             return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
@@ -83,6 +92,9 @@ public class UserController {
             CustomPage<User> page = this.userService.findByFilter(filterParameter, pageNumber, pageSize);
 
             if (page.getContent() != null) {
+                List<User> usersResponse = page.getContent();
+                List<User> users = this.removeRoleDataFromUserList(usersResponse);
+                page.setContent(users);
                 return new ResponseEntity<>(page, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -91,5 +103,16 @@ public class UserController {
         } catch (Exception error) {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private List<User> removeRoleDataFromUserList(List<User> users) {
+        for (int i = 0; i < users.size(); i++) {
+            this.removeRoleFromUser(users.get(i));
+        }
+        return users;
+    }
+
+    private User removeRoleFromUser(User user) {
+        return RoleUtils.removeRoleDataFromUser(user, true);
     }
 }

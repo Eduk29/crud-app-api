@@ -45,7 +45,6 @@ public class UserService {
         SearchFilter searchFilter = null;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<User> page = null;
-        List<User> users = null;
 
         if (filter != null) {
             searchFilter = new SearchFilter(filter);
@@ -53,8 +52,8 @@ public class UserService {
 
         switch (searchFilter.getSearchMode()) {
             case "username":
-                users = this.userRepository.findByUsernameContainsIgnoreCase(searchFilter.getSearchParameter());
-                return new CustomPage(users);
+                page = this.userRepository.findByUsernameContainsIgnoreCase(pageable, searchFilter.getSearchParameter());
+                return new CustomPage(page);
 
             default:
                 page = this.userRepository.findAll(pageable);

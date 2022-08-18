@@ -14,9 +14,9 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
     List<Person> findAll();
     Optional<Person> findById(Long id);
     Page<Person> findAll(Pageable pageable);
-    List<Person> findByNameContainsIgnoreCase(String name);
-    List<Person> findByAge(Integer age);
-    List<Person> findByBirthdayContains(String birthday);
+    Page<Person> findByNameContainsIgnoreCase(Pageable pageble, String name);
+    Page<Person> findByAge(Pageable pageable, Integer age);
+    Page<Person> findByBirthdayContains(Pageable pageable, String birthday);
     boolean existsById(Long id);
     void deleteById(Long id);
 }

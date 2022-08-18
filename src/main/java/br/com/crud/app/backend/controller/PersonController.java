@@ -4,6 +4,7 @@ import br.com.crud.app.backend.model.CustomPage;
 import br.com.crud.app.backend.enums.ErrorsEnum;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.service.PersonService;
+import br.com.crud.app.backend.utils.RoleUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,7 @@ public class PersonController {
 
             CustomPage<Person> page = this.personService.findAllPaginated(pageNumber, pageSize);
 
-            if (page.getContent() != null) {
-                return new ResponseEntity<>(page, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return AdjustRoleData(page);
         } catch (NumberFormatException error) {
             return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
         }
@@ -61,10 +59,7 @@ public class PersonController {
 
             CustomPage<Person> page = this.personService.findByFilter(filterParameter, pageNumber, pageSize);
 
-            if (page.getContent() != null) {
-                return new ResponseEntity<>(page, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return AdjustRoleData(page);
         } catch (NumberFormatException error) {
             return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
         } catch (Exception error) {
@@ -78,12 +73,14 @@ public class PersonController {
         try {
             Long id = Long.parseLong(idParameter);
 
-            Optional<Person> person = this.personService.findById(id);
-            if(person.isEmpty()) {
+            Optional<Person> personResponse = this.personService.findById(id);
+            personResponse.get().setUser(RoleUtils.removeRoleDataFromUser(personResponse.get().getUser(), true));
+
+            if(personResponse.isEmpty()) {
                 return new ResponseEntity<>(ErrorsEnum.ERROO1.getDescription(), HttpStatus.BAD_REQUEST);
             }
 
-            return new ResponseEntity<>(person, HttpStatus.OK);
+            return new ResponseEntity<>(personResponse, HttpStatus.OK);
         } catch (NumberFormatException error) {
             return new ResponseEntity<>(ErrorsEnum.ERROO2.getDescription(), HttpStatus.BAD_REQUEST);
         }
@@ -94,7 +91,13 @@ public class PersonController {
     public ResponseEntity<?> registerPerson(@RequestBody Person person) {
         try{
             CustomPage<Person> page = this.personService.registerPerson(person);
-            return new ResponseEntity<>(page, HttpStatus.CREATED);
+
+            if (page.getContent() != null) {
+                List<Person> persons = this.removeRoleDataFromPersonList(page.getContent());
+                page.setContent(persons);
+                return new ResponseEntity<>(page, HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (RuntimeException error) {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -115,10 +118,35 @@ public class PersonController {
     @ApiOperation(value = "Update a specific person.")
     public ResponseEntity<?> update(@RequestBody Person person, @PathVariable("id") Long id) {
         try {
-            CustomPage<Person> persons = this.personService.updateById(person, id);
-            return new ResponseEntity<CustomPage<Person>>(persons, HttpStatus.OK);
+            CustomPage<Person> page = this.personService.updateById(person, id);
+
+            if (page.getContent() != null) {
+                List <Person> persons = this.removeRoleDataFromPersonList(page.getContent());
+                page.setContent(persons);
+                return new ResponseEntity<CustomPage<Person>>(page, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch(RuntimeException error) {
             return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private ResponseEntity<?> AdjustRoleData(CustomPage<Person> page) {
+        if (page.getContent() != null) {
+            List<Person> persons = this.removeRoleDataFromPersonList(page.getContent());
+            page.setContent(persons);
+            return new ResponseEntity<>(page, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private List<Person> removeRoleDataFromPersonList(List<Person> persons) {
+        for (int i = 0; i < persons.size(); i++) {
+            Person person = persons.get(i);
+            if (person.getUser() != null) {
+                RoleUtils.removeRoleDataFromUser(person.getUser(), true);
+            }
+        }
+        return persons;
     }
 }

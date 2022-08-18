@@ -5,6 +5,7 @@ import br.com.crud.app.backend.model.CustomPage;
 import br.com.crud.app.backend.model.Person;
 import br.com.crud.app.backend.model.SearchFilter;
 import br.com.crud.app.backend.repository.PersonRepository;
+import br.com.crud.app.backend.utils.RoleUtils;
 import br.com.crud.app.backend.utils.ServiceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,8 @@ public class PersonService {
     private UserService userService;
 
     public List<Person> findAll() {
-        List<Person> persons = this.personRepository.findAll();
+        List<Person> personsResponse = this.personRepository.findAll();
+        List<Person> persons = this.removeRoleDataFromPersonList(personsResponse);
         return persons;
     }
 
@@ -40,7 +42,6 @@ public class PersonService {
     public CustomPage<Person> findAllPaginated(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Person> page = this.personRepository.findAll(pageable);
-
         return new CustomPage<Person>(page);
     }
 
@@ -48,7 +49,6 @@ public class PersonService {
         SearchFilter searchFilter = null;
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Person> page = null;
-        List<Person> persons = null;
 
         if (filter != null) {
             searchFilter = new SearchFilter(filter);
@@ -56,16 +56,16 @@ public class PersonService {
 
         switch (searchFilter.getSearchMode()) {
             case "name":
-                persons = this.personRepository.findByNameContainsIgnoreCase(searchFilter.getSearchParameter());
-                return new CustomPage(persons);
+                page = this.personRepository.findByNameContainsIgnoreCase(pageable, searchFilter.getSearchParameter());
+                return new CustomPage(page);
 
             case "age":
-                persons = this.personRepository.findByAge(Integer.parseInt(searchFilter.getSearchParameter()));
-                return new CustomPage(persons);
+                page = this.personRepository.findByAge(pageable, Integer.parseInt(searchFilter.getSearchParameter()));
+                return new CustomPage(page);
 
             case "birthday":
-                persons = this.personRepository.findByBirthdayContains(searchFilter.getSearchParameter());
-                return new CustomPage(persons);
+                page = this.personRepository.findByBirthdayContains(pageable, searchFilter.getSearchParameter());
+                return new CustomPage(page);
 
             default:
                 page = this.personRepository.findAll(pageable);
@@ -101,6 +101,16 @@ public class PersonService {
 
         CustomPage<Person> customPage = new CustomPage<Person>(person);
         return customPage;
+    }
+
+    private List<Person> removeRoleDataFromPersonList(List<Person> persons) {
+        for (int i = 0; i < persons.size(); i++) {
+            Person person = persons.get(i);
+            if (person.getUser() != null) {
+                RoleUtils.removeRoleDataFromUser(person.getUser(), true);
+            }
+        }
+        return persons;
     }
 
     private void validatePerson(Person person)  throws RuntimeException {

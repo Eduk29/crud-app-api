@@ -1,5 +1,9 @@
 create database DEV_CRUD_APP_DATABASE;
 
+create user crud_app_user with password 'crudapp@2022';
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO crud_app_user;
+
 --
 -- TABLE: CRUD_APP_USER
 --

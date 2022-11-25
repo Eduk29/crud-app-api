@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @Api(tags = "Persons REST API")
 public class PersonController {
 

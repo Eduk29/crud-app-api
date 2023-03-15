@@ -9,6 +9,8 @@ server:
     include-stacktrace: never
     whitelabel:
       enabled: true
+      
+
 
 management:
   security:

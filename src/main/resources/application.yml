@@ -44,8 +44,7 @@ spring:
       idleTimeout: 10000
       connectionTimeout: 250
       maxLifetime: 600000
-    url: jdbc:mariadb://klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/g1hzh61n8xw0g6pj
-    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://y9y6v7dbaxribi0p:ce9ubo440qyegq9m@klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/g1hzh61n8xw0g6pj
     username: y9y6v7dbaxribi0p
     password: ce9ubo440qyegq9m
     

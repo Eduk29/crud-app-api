@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/roles")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Api(tags = "Roles REST API")
 public class RoleController {
 

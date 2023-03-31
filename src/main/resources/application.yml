@@ -44,9 +44,10 @@ spring:
       idleTimeout: 10000
       connectionTimeout: 250
       maxLifetime: 600000
-    url: jdbc:mysql://y9y6v7dbaxribi0p:ce9ubo440qyegq9m@klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/g1hzh61n8xw0g6pj
-    username: y9y6v7dbaxribi0p
-    password: ce9ubo440qyegq9m
+    url: jdbc:mariadb://localhost:3306/DEV_CRUD_APP_DATABASE
+    driverClassName: org.mariadb.jdbc.Driver
+    username: root
+    password: pitico
     
   jpa:
     hibernate:
